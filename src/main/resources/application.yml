@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: oauth2Basic
+  output:
+    ansi:
+      enabled: ALWAYS
+security:
+  user:
+    password: password
+  oauth2:
+    resource:
+      filter-order: 3
+logging:
+  level:
+    org.springframework.security: DEBUG
