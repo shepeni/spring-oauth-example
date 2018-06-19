@@ -30,7 +30,7 @@ import org.springframework.web.filter.CorsFilter;
  * @author omar
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     
     private UserDetailsService userDetailsService;

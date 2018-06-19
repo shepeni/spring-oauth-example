@@ -50,9 +50,12 @@ public class OauthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security)
             throws Exception {
-        security.passwordEncoder(passwordEncoder);
+        security
+                .passwordEncoder(passwordEncoder)
+                .tokenKeyAccess("permitAll()")                  //Abrir los endpoints de solicitud de tokens
+                .checkTokenAccess("isAuthenticated()");
     }
-
+    
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints)
             throws Exception {
@@ -66,22 +69,12 @@ public class OauthServerConfig extends AuthorizationServerConfigurerAdapter {
         // @formatter:off
         clients.jdbc(dataSource)
                 .passwordEncoder(passwordEncoder)
-                .withClient("my-trusted-client")
+                .withClient("my-client")
                 .authorizedGrantTypes("password", "authorization_code",
                         "refresh_token")
                 .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
-                .scopes("read", "write", "trust")
-            .and()
-                .withClient("my-client-with-registered-redirect")
-                .authorizedGrantTypes("authorization_code")
-                .authorities("ROLE_CLIENT").scopes("read", "trust")
-                .resourceIds("oauth2-resource")
-                .redirectUris("http://anywhere?key=value")
-            .and()
-                .withClient("my-client-with-secret")
-                .authorizedGrantTypes("client_credentials", "password")
-                .authorities("ROLE_CLIENT").scopes("read")
-                .resourceIds("oauth2-resource").secret("secret");
+                .scopes("read", "write")
+                .secret("secret");
         // @formatter:on
     }
 
