@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -29,17 +30,10 @@ import org.springframework.web.filter.CorsFilter;
  * @author omar
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     
-    
-    private AuthenticationManager authManager;
     private UserDetailsService userDetailsService;
-
-    @Autowired
-    public void setAuthManager(AuthenticationManager authManager) {
-        this.authManager = authManager;
-    }
 
     @Autowired
     public void setUserDetailsService(UserDetailsService userDetailsService) {
@@ -81,18 +75,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//            .authorizeRequests()
-//                .antMatchers("/bootstrap*").anonymous()
-//                .antMatchers("/login*").anonymous()
-//                .anyRequest().authenticated()
-//                .and()
-//            .formLogin().permitAll()
-//                .and()
-//            .logout()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .and()
-//            .csrf().disable()
-//            ;  //Add logout on get (instead off post)
+        http
+            .authorizeRequests()
+            .antMatchers("/h2*").anonymous()               
+            .anyRequest().authenticated()
+          .and()
+            .formLogin().permitAll()
+          .and()
+            .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+          .and()
+            .csrf().disable();  //Add logout on get (instead off post)
     }
 }

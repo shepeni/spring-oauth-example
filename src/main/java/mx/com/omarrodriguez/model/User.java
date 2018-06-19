@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -26,7 +27,7 @@ public class User implements UserDetails{
 
     public User(String username, String password) {
         this.username = username;
-        this.password = password;
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
     
     @Override

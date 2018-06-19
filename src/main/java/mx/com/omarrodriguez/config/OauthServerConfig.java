@@ -68,17 +68,16 @@ public class OauthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .passwordEncoder(passwordEncoder)
                 .withClient("my-trusted-client")
                 .authorizedGrantTypes("password", "authorization_code",
-                        "refresh_token", "implicit")
+                        "refresh_token")
                 .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
                 .scopes("read", "write", "trust")
-                .resourceIds("oauth2-resource")
-                .accessTokenValiditySeconds(60)
-                .redirectUris("http://anywhere").and()
+            .and()
                 .withClient("my-client-with-registered-redirect")
                 .authorizedGrantTypes("authorization_code")
                 .authorities("ROLE_CLIENT").scopes("read", "trust")
                 .resourceIds("oauth2-resource")
-                .redirectUris("http://anywhere?key=value").and()
+                .redirectUris("http://anywhere?key=value")
+            .and()
                 .withClient("my-client-with-secret")
                 .authorizedGrantTypes("client_credentials", "password")
                 .authorities("ROLE_CLIENT").scopes("read")
@@ -86,11 +85,11 @@ public class OauthServerConfig extends AuthorizationServerConfigurerAdapter {
         // @formatter:on
     }
 
-    @Autowired
-    public void init(AuthenticationManagerBuilder auth) throws Exception {
-        // @formatter:off
-        auth.jdbcAuthentication().dataSource(dataSource).withUser("dave")
-                .password("secret").roles("USER", "ACTUATOR");
-        // @formatter:on
-    }
+//    @Autowired
+//    public void init(AuthenticationManagerBuilder auth) throws Exception {
+//        // @formatter:off
+//        auth.jdbcAuthentication().dataSource(dataSource).withUser("dave")
+//                .password("secret").roles("USER", "ACTUATOR");
+//        // @formatter:on
+//    }
 }
